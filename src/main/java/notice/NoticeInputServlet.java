@@ -41,7 +41,7 @@ public class NoticeInputServlet extends HttpServlet {
 		// session.getAttribute("MANAGER");
 		// 작성일 : 오라클의 sysdate 함수 사용
 		//서블릿(공지글 전체 조회) 매핑
-		
+		response.sendRedirect("NoticeSelectAllServlet");
 	}
 
 }

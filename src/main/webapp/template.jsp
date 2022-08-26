@@ -74,7 +74,7 @@ function startClock(){
 						<c:if test="${sessionScope.MANAGER != null }">
 							<a href="template.jsp?BODY=noticeInput.jsp"><font color="red">● 공지사항 쓰기</font></a><br/>
 						</c:if>
-						<a href="#">● 공지사항 목록</a><br/>
+						<a href="template.jsp?BODY=NoticeSelectAllServlet">● 공지사항 목록</a><br/>
 						<a href="template.jsp?BODY=bbsInput.jsp">● 게시글 쓰기</a><br/>
 						<a href="#">● 게시글 목록</a><br/> 
 						<c:if test="${sessionScope.MANAGER != null }">
