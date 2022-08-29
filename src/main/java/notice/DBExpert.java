@@ -8,12 +8,62 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DBExpert {
-	DBExpert(){}
+	public DBExpert(){}
 	final String name = "oracle.jdbc.OracleDriver";
 	final String db = "jdbc:oracle:thin:@127.0.0.1:1521/xe";
 	Connection con; Statement stmt; PreparedStatement pstmt;
 	ResultSet rs;
 	
+	public ArrayList<String> getNations(){
+		String select = "select code from nation_code";
+		ArrayList<String> list = new ArrayList<String>();
+		try {
+			Class.forName(name);
+			con = DriverManager.getConnection(db,"hr","hr");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(select);
+			while(rs.next()) {
+				list.add(rs.getString(1));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close(); rs.close(); con.close();
+			}catch(Exception e) {}
+		}
+		return list;
+	}
+	
+	Notice getNotice(String seqno) {
+		String select = "select seqno, id, title,"+
+		" to_char(input_date, 'YY/MM/DD hh:mm:ss'),"+
+		"content from notice_tbl"+
+		" where seqno = ?";
+		Notice notice = null; // 조회 결과 저장을 위한 변수 선언
+		try {
+			Class.forName(name);
+			con = DriverManager.getConnection(db,"hr","hr");
+			pstmt = con.prepareStatement(select);
+			pstmt.setInt(1, Integer.parseInt(seqno));
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				notice = new Notice();
+				notice.setSeqno(rs.getInt(1));// 글 번호 설정
+				notice.setId(rs.getString(2));// 작성자 설정
+				notice.setTitle(rs.getString(3));// 제목 설정
+				notice.setDate(rs.getString(4));// 작성일 설정
+				notice.setContent(rs.getString(5));// 내용 설정
+			}
+		}catch(Exception e) {
+			
+		}finally {
+			try {
+				rs.close(); pstmt.close(); con.close();
+			}catch(Exception e) {}
+		}
+		return notice;
+	}
 	int selectTotalCount() {
 		String select = "select count(*) from notice_tbl";
 		int count = -1;
@@ -33,7 +83,7 @@ public class DBExpert {
 		}
 		return count;
 	}
-	ArrayList<Notice> selectAllNotice() {
+	ArrayList<Notice> selectAllNotice(String page) {
 		ArrayList<Notice> al = new ArrayList<Notice>();
 		//조회 결과를 Notice에 담고,
 		try {
@@ -50,6 +100,9 @@ public class DBExpert {
 					+ " where rn > ? and rn < ?";
 			pstmt = con.prepareStatement(select);
 			Integer pageNo = 1; //페이지 번호를 넣는다.
+			if(page != null) {
+				pageNo = Integer.parseInt(page);
+			}
 			int start = (pageNo - 1) * 5;
 			int end = ((pageNo - 1) * 5) +6;
 			pstmt.setInt(1, start);

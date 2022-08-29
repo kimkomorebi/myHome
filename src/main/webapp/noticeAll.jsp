@@ -21,13 +21,13 @@
 				<tr>
 					<td>${notice.seqno }</td>
 					<td>${notice.id }</td>
-					<td>${notice.title }</td>
+					<td><a href="readNotice?SEQNO=${notice.seqno }">${notice.title }</a></td>
 					<td>${notice.date }</td>
 				</tr>
 			</c:forEach>
 		</table>
 		<c:forEach begin="1" end="${PAGES }" var="page">
-			<a href="#">${page }</a>
+			<a href="NoticeSelectAllServlet?PAGENO=${page }">${page }</a>
 		</c:forEach>
 	</div>
 </body>

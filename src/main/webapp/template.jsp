@@ -78,7 +78,7 @@ function startClock(){
 						<a href="template.jsp?BODY=bbsInput.jsp">● 게시글 쓰기</a><br/>
 						<a href="#">● 게시글 목록</a><br/> 
 						<c:if test="${sessionScope.MANAGER != null }">
-							<a href="#">● 상품 등록</a><br/>
+							<a href="getNationCodes">● 상품 등록</a><br/>
 						</c:if>
 						<a href="#">● 상품 목록</a><br/>
 						<c:if test="${sessionScope.LOGINID != null }">
