@@ -11,12 +11,26 @@
 		<h2 align="center">회원 가입</h2>
 	</header>
 	<section>
-			<form action="memberRegister.do" method="post" onSubmit="return checkk(this)">
+			<form action="memberRegister.do" method="post" onSubmit="return checkk(this)" name="frm">
+				<input type="hidden" name="idChecked"/>
 				<div align="center" id="secCon">
 					<table border="1">
 						<tr>
-							<th>회원번호(자동발생)</th>
-							<td><input type="text" name="IDD" readonly /></td>
+							<th>회원계정</th>
+							<td>
+								<input type="text" name="IDD" id="IDD"/>
+								<input type="button" value="중복 검사" onClick="idCheck()"/>
+							</td>
+						</tr>
+						<tr>
+							<th>암 호</th>
+							<td>
+								<input type="password" name="PASSWORD"/>
+							</td>
+						</tr>
+						<tr>
+							<th>암호 확인</th>
+							<td><input type="password" name="CONFIRM"/></td>
 						</tr>
 						<tr>
 							<th>회원성명</th>
@@ -31,33 +45,35 @@
 							<td><input type="text" name="ADDR"/></td>
 						</tr>
 						<tr>
-							<th>가입일자</th>
-							<td><input type="date" name="DATE"/></td>
-						</tr>
-						<tr>
-							<th>고객등급[A:VIP,B:일반,C:직원]</th>
+							<th>성 별</th>
 							<td>
-								<select name="LEVEL">
-									<option value="A">VIP</option>
-									<option value="B">일반</option>
-									<option value="C">직원</option>
-								</select>
+								남 : <input type="radio" name="GENDER" value="M"/>
+								여 : <input type="radio" name="GENDER" value="F"/>
 							</td>
 						</tr>
 						<tr>
-							<th>도시코드</th>
+							<th>이메일</th>
 							<td>
-								<select name="CITY">
-									<option value="01">서울</option>
-									<option value="60">제주도</option>
-									<option value="30">울릉군</option>
+								<input type="text" name="EMAIL"/>
+							</td>
+						</tr>
+						<tr>
+							<th>직 업</th>
+							<td>
+								<select name="JOB">
+									<option>--선택하세요--</option>
+									<option>회사원</option>
+									<option>학생</option>
+									<option>가사</option>
+									<option>자영업</option>
+									<option>기타</option>
 								</select>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2" align="center">
-								<input type="submit" value="등록" name="btn"/>
-								<input type="button" value="조회" onClick="doSelect()"/>
+								<input type="submit" value="등록"/>
+								<input type="reset" value="취소"/>
 							</td>
 						</tr>
 					</table>
@@ -65,23 +81,49 @@
 			</form>
 	</section>
 	<script type="text/javascript">
-		function doSelect(){
-			if(confirm("정말로 조회하시겠습니까?")){
-				location.href="memberAll.do"; //조회 서블릿 호출
-			}
+		function idCheck() {
+			var url = "idCheck.do?IDD="+document.frm.IDD.value;
+			window.open(url,"_blank_","width=500, height=300");
 		}
 		function checkk(frm){
+			if(frm.IDD.value == '') {
+				alert("계정을 입력하세요."); return false;
+			}else {
+				if(frm.IDD.length > 20) {
+					alert("계정은 20글자 이내어야 합니다.");
+					return false;
+				}
+			}
+			if(frm.idChecked.value == '') {
+				alert("계정 중복 검사를 해주세요.");return false;
+			}
+			if(frm.PASSWORD.value == '') {
+				alert("암호를 입력하세요."); return false;
+			}else {
+				if(frm.PASSWORD.length > 20) {
+					alert("암호는 20글자 이내로 입력하세요.");
+					return false;
+				}
+			}
+			if(frm.PASSWORD.value != frm.CONFIRM.value) {
+				alert("암호가 일치하지 않습니다.");
+				return false;
+			}
 			if(frm.NAME.value == ''){
 				alert("이름을 입력하세요."); return false;
+			}else {
+				if(frm.NAME.length > 50) {
+					alert("이름은 50글자 이내로 입력하세요.");
+					return false;
+				}
 			}
-			if(frm.TEL.value == ''){
-				alert("회원 전화를 입력하세요."); return false;
+			if(! frm.GENDER[0].checked && ! frm.GENDER [1]) {
+				alert("성별을 선택하세요.");
+				return false;
 			}
-			if(frm.ADDR.value == ''){
-				alert("주소를 입력하세여."); return false;
-			}
-			if(frm.DATE.value == '') {
-				alert("날짜를 입력하세요."); return false;
+			if(frm.JOB.selectedIndex < 1) {
+				alert("직업을 선택하세요.");
+				return false;
 			}
 			if(confirm("입력한 내용이 맞습니까?")){
 				return true;

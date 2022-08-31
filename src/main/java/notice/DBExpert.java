@@ -16,6 +16,26 @@ public class DBExpert {
 	Connection con; Statement stmt; PreparedStatement pstmt;
 	ResultSet rs;
 	
+	public String userIdCheck(String id) {
+		String select = "select id from users_tbl"+
+		" where id =?";
+		String checkID = null;
+		try {
+			Class.forName(name);
+			con = DriverManager.getConnection(db,"hr","hr");
+			pstmt = con.prepareStatement(select);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) checkID = rs.getString(1);
+		}catch(Exception e) {
+			
+		}finally {
+			try {
+				con.close(); pstmt.close(); rs.close();
+			}catch(Exception e) {}
+		}
+		return checkID;
+	}
 	public String getID(String id) {
 		String select = "select id from items_tbl"+
 		" where id = ?";

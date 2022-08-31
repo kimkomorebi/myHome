@@ -16,7 +16,7 @@
 				<tr>
 					<th>상품 번호</th>
 					<td>
-					<input type="text" name="ID"/>
+					<input type="text" name="ID" id="ID"/>
 					<input type="button" value="중복 검사" onClick="idCheck()"/>
 					</td>
 				</tr>

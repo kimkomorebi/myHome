@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
 		String id = request.getParameter("ID");
 		String pwd = request.getParameter("PWD");
 		//고객 정보 테이블에 있는 계정과 암호와 비교한다.
-		String select = "select password from member_info_tbl"+
+		String select = "select pwd from users_tbl"+
 		" where id = ?";
 		String result = ""; // 로그인 결과를 위한 변수 선언
 		Connection con = null; PreparedStatement pstmt = null;
