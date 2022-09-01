@@ -82,6 +82,14 @@
 	</section>
 	<script type="text/javascript">
 		function idCheck() {
+			if(document.frm.IDD.value == '') {
+				alert("계정을 입력하세요."); return false;
+			}else {
+				if(document.frm.IDD.length > 20) {
+					alert("계정은 20글자 이내어야 합니다.");
+					return false;
+				}
+			}
 			var url = "idCheck.do?IDD="+document.frm.IDD.value;
 			window.open(url,"_blank_","width=500, height=300");
 		}
