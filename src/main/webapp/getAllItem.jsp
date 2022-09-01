@@ -24,6 +24,7 @@
 					<td><a href="getItem?ID=${item.id }">${item.name }</a></td>
 					<td>${item.price }</td>
 					<td>${item.origin }</td>
+
 					<td><a href="#">장바구니 담기</a></td>
 				</tr>
 			</c:forEach>

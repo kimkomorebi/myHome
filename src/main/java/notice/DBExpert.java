@@ -24,7 +24,7 @@ public class DBExpert {
 //				" from (select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss')"+
 //				" from users_tbl))"
 //				+" where rn > ? and rn < ? order by id asc";
-		String select = "select id, pwd, name, phone, addr, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss'"+
+		String select = "select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss') "+
 				"from users_tbl order by id asc";
 		ArrayList<User> al = new ArrayList<User>();
 		try {
@@ -50,9 +50,10 @@ public class DBExpert {
 				user.setName(rs.getString(3));
 				user.setTel(rs.getString(4));
 				user.setAddr(rs.getString(5));
-				//user.setGender(rs.getCharacterStream(6));
-				user.setJob(rs.getString(7));
-				user.setEntry_date(rs.getString(8));
+				user.setGender(rs.getString(6).charAt(0));
+				user.setEmail(rs.getString(7));
+				user.setJob(rs.getString(8));
+				user.setEntry_date(rs.getString(9));
 				al.add(user);
 				
 			}
@@ -60,7 +61,7 @@ public class DBExpert {
 			e.printStackTrace();
 		}finally {
 			try {
-				rs.close(); con.close(); pstmt.close();
+				rs.close(); con.close(); stmt.close();
 			}catch(Exception e) {}
 		}
 		return al;
