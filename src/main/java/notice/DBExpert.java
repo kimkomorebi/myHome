@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import items.Item;
+import users.User;
 
 public class DBExpert {
 	public DBExpert(){}
@@ -16,6 +17,83 @@ public class DBExpert {
 	Connection con; Statement stmt; PreparedStatement pstmt;
 	ResultSet rs;
 	
+	
+	public ArrayList<User> selectAllUser() {
+//		String select = "select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss')"+
+//				" from (select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss'), rownum rn"+
+//				" from (select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss')"+
+//				" from users_tbl))"
+//				+" where rn > ? and rn < ? order by id asc";
+		String select = "select id, pwd, name, phone, addr, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss'"+
+				"from users_tbl order by id asc";
+		ArrayList<User> al = new ArrayList<User>();
+		try {
+			Class.forName(name);
+			con = DriverManager.getConnection(db,"hr","hr");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(select);
+			
+//			pstmt = con.prepareStatement(select);
+//			Integer pageNum = 1;// 페이지 번호
+//			if(page != null) {
+//				pageNum = Integer.parseInt(page);
+//			}
+//			int start = (pageNum = 1) * 5;
+//			int end = ((pageNum - 1) *5) + 6;
+//			pstmt.setInt(1, start);
+//			pstmt.setInt(2, end);
+//			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				User user = new User();
+				user.setId(rs.getString(1));
+				user.setPwd(rs.getString(2));
+				user.setName(rs.getString(3));
+				user.setTel(rs.getString(4));
+				user.setAddr(rs.getString(5));
+				//user.setGender(rs.getCharacterStream(6));
+				user.setJob(rs.getString(7));
+				user.setEntry_date(rs.getString(8));
+				al.add(user);
+				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				rs.close(); con.close(); pstmt.close();
+			}catch(Exception e) {}
+		}
+		return al;
+	}
+	public String putUser(User user) {
+		String insert = "insert into users_tbl values("+
+				"?,?,?,?,?,?,?,?,sysdate)";
+		String result = "";
+		try {
+			Class.forName(name);
+			con = DriverManager.getConnection(db,"hr","hr");
+			pstmt = con.prepareStatement(insert);
+			pstmt.setString(1, user.getId());
+			pstmt.setString(2, user.getPwd());
+			pstmt.setString(3, user.getName());
+			pstmt.setString(4, user.getTel());
+			pstmt.setString(5, user.getAddr());
+			pstmt.setString(6, user.getGender()+"");
+			//pstmt.setObject(6, user.getGender(), java.sql.Types.CHAR);
+			pstmt.setString(7, user.getEmail());
+			pstmt.setString(8, user.getJob());
+			pstmt.executeUpdate();//insert 실행
+			result = "OK"; // 삽입 성공
+		}catch(Exception e) {
+			result = "NOK"; //삽입 실패
+			e.printStackTrace();
+		}finally {
+			try {
+				con.close(); pstmt.close();
+			}catch(Exception e) {}
+		}
+		return result;
+	}//가입자 삽입 메서드
 	public String userIdCheck(String id) {
 		String select = "select id from users_tbl"+
 		" where id =?";

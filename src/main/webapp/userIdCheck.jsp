@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h2 align="center">아이디 중복 조회</h2>
-	<form action="" name="checkFrm">
+	<form action="idCheck.do" name="checkFrm">
 		입력한 아이디 : <input type="text" name="IDD" value="${requestScope.IDD }"/>
 		<input type="submit" value="중복 체크"/>
 	</form>

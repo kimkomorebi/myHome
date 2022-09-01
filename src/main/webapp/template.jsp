@@ -70,15 +70,17 @@ function startClock(){
 					<div id="menu">
 						<a href="template.jsp?BODY=intro.jsp">● 소 개</a><br/>
 						<a href="">● 세계의 시간</a><br/>
-						<a href="#">● 회원목록 조회/수정</a><br/>
 						<c:if test="${sessionScope.MANAGER != null }">
-							<a href="template.jsp?BODY=noticeInput.jsp"><font color="red">● 공지사항 쓰기</font></a><br/>
+							<a href="template.jsp?BODY=UserSelectAllServlet">◎ 회원목록 조회/수정</a><br/>
+						</c:if>
+						<c:if test="${sessionScope.MANAGER != null }">
+							<a href="template.jsp?BODY=noticeInput.jsp"><font color="red">◎ 공지사항 쓰기</font></a><br/>
 						</c:if>
 						<a href="template.jsp?BODY=NoticeSelectAllServlet">● 공지사항 목록</a><br/>
 						<a href="template.jsp?BODY=bbsInput.jsp">● 게시글 쓰기</a><br/>
 						<a href="">● 게시글 목록</a><br/> 
 						<c:if test="${sessionScope.MANAGER != null }">
-							<a href="getNationCodes">● 상품 등록</a><br/>
+							<a href="getNationCodes">◎ 상품 등록</a><br/>
 						</c:if>
 						<a href="getAllItems">● 상품 목록</a><br/>
 						<c:if test="${sessionScope.LOGINID != null }">
