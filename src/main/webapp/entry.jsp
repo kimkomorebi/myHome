@@ -82,6 +82,10 @@
 	</section>
 	<script type="text/javascript">
 		function idCheck() {
+			if(frm.IDD.value == '') {
+				alert("계정명을 입력해 주세요.");
+				return false;
+			}
 			var url = "idCheck.do?IDD="+document.frm.IDD.value;
 			window.open(url,"_blank_","width=500, height=300");
 		}
