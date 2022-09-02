@@ -32,10 +32,15 @@ public class DBExpert {
 			pstmt.setInt(2, item.getPrice());
 			pstmt.setString(3, item.getSpec());
 			pstmt.setString(4, item.getId());
+			pstmt.executeUpdate();
+			result = "OK";
 		}catch(Exception e) {
-			
+			result = "NOK";
+			e.printStackTrace();
 		}finally {
-			
+			try {
+				con.close(); pstmt.close();
+			}catch(Exception e) {}
 		}
 		return result;
 	}

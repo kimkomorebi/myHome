@@ -22,10 +22,13 @@ public class GetItemServlet extends HttpServlet {
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("ID");
+		String result = request.getParameter("R");
 		DBExpert dbe = new DBExpert();
 		Item item = dbe.getItem(id);
+		String url = "template.jsp?BODY=itemDetail.jsp";
+		if(result != null) url = url+"&R="+result;
 		request.setAttribute("ITEM", item);
-		RequestDispatcher rd = request.getRequestDispatcher("template.jsp?BODY=itemDetail.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(url);
 		rd.forward(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

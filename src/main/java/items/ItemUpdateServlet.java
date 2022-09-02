@@ -2,6 +2,7 @@ package items;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,6 +34,10 @@ public class ItemUpdateServlet extends HttpServlet {
 		item.setPrice(Integer.parseInt(price));
 		item.setSpec(spec);
 		DBExpert dbe = new DBExpert();
+		String result = dbe.updateProduct(item);
+		System.out.println("result °ª"+result);
+		response.sendRedirect("getItem?ID="+item.getId()+"&R="+result);
+	
 	}
 
 }

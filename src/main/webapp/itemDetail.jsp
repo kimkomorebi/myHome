@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,16 @@
 <body>
 	<div align="center">
 		<h2>상품 상세 정보</h2>
+		<c:if test="${param.R == 'OK' }">
+			<script type="text/javascript">
+			alert("상품 정보 수정 완료하였습니다.");
+			</script>
+		</c:if>
+		<c:if test="${param.R == 'NOK' }">
+			<script type="text/javascript">
+				alert("상품 정보 수정 실패!!");
+			</script>
+		</c:if>
 		<form action="itemUpdate.do" method="post">
 		<input type="hidden" name="ID" value="${ITEM.id }"/>
 			<table border="1">
@@ -31,7 +42,8 @@
 				<tr>
 					<th>설 명</th>
 					<td>
-						<textarea rows="5" cols="40" name="SPEC=${ITEM.spec }">${ITEM.spec }</textarea>
+						<%-- <input type="hidden" name="SPEC" value="${ITEM.spec }"/> --%>
+						<textarea rows="5" cols="40" name="SPEC" value="">${ITEM.spec }</textarea>
 					</td>
 				</tr>
 				<tr align="center">
