@@ -1,7 +1,6 @@
 package users;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,27 +11,31 @@ import javax.servlet.http.HttpServletResponse;
 
 import notice.DBExpert;
 
-@WebServlet("/UserSelectAllServlet")
-public class UserSelectAllServlet extends HttpServlet {
+/**
+ * Servlet implementation class UserDetailServlet
+ */
+@WebServlet("/userDetail.do")
+public class UserDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public UserSelectAllServlet() {
+    public UserDetailServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String pageNo = request.getParameter("PAGENO");
+		String id = request.getParameter("ID");
+		String result = request.getParameter("R");
 		DBExpert dbe = new DBExpert();
-		ArrayList<User> list = dbe.selectAllUser(pageNo);
-		int count = dbe.userCount();
-		int pageCount = count / 5;
-		if(count % 5 != 0) pageCount++;
-		request.setAttribute("USERS", list);
-		request.setAttribute("PAGES", pageCount);
-		RequestDispatcher rd = request.getRequestDispatcher("template.jsp?BODY=allUsers.jsp");
+		//계정으로 가입자 조회
+		User user = dbe.getUser(id);
+		//조회 결과를 JSP(userDetail.jsp)로 전송
+		String url = "template.jsp?BODY=userDetail.jsp";
+		if(result != null) url = url+"&R="+result;
+		request.setAttribute("USER", user);
+		RequestDispatcher rd = request.getRequestDispatcher(url);
 		rd.forward(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 	}
-
 }

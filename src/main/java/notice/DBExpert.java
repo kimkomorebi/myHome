@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import items.Item;
 import users.User;
 
+
+
+
 public class DBExpert {
 	public DBExpert(){}
 	final String name = "oracle.jdbc.OracleDriver";
@@ -17,54 +20,176 @@ public class DBExpert {
 	Connection con; Statement stmt; PreparedStatement pstmt;
 	ResultSet rs;
 	
-	
-	public ArrayList<User> selectAllUser() {
-//		String select = "select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss')"+
-//				" from (select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss'), rownum rn"+
-//				" from (select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss')"+
-//				" from users_tbl))"
-//				+" where rn > ? and rn < ? order by id asc";
-		String select = "select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss') "+
-				"from users_tbl order by id asc";
-		ArrayList<User> al = new ArrayList<User>();
+	public String updateProduct(Item item) {
+		String update = "update items_tbl set name=?, price=?,"+
+				"spec=? where id=?";
+		String result = "";
 		try {
 			Class.forName(name);
 			con = DriverManager.getConnection(db,"hr","hr");
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(select);
+			pstmt = con.prepareStatement(update);
+			pstmt.setString(1, item.getName());
+			pstmt.setInt(2, item.getPrice());
+			pstmt.setString(3, item.getSpec());
+			pstmt.setString(4, item.getId());
+		}catch(Exception e) {
 			
-//			pstmt = con.prepareStatement(select);
-//			Integer pageNum = 1;// 페이지 번호
-//			if(page != null) {
-//				pageNum = Integer.parseInt(page);
-//			}
-//			int start = (pageNum = 1) * 5;
-//			int end = ((pageNum - 1) *5) + 6;
-//			pstmt.setInt(1, start);
-//			pstmt.setInt(2, end);
-//			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				User user = new User();
-				user.setId(rs.getString(1));
-				user.setPwd(rs.getString(2));
-				user.setName(rs.getString(3));
-				user.setTel(rs.getString(4));
-				user.setAddr(rs.getString(5));
-				user.setGender(rs.getString(6).charAt(0));
-				user.setEmail(rs.getString(7));
-				user.setJob(rs.getString(8));
-				user.setEntry_date(rs.getString(9));
-				al.add(user);
-				
+		}finally {
+			
+		}
+		return result;
+	}
+	
+	public String updateuser(User user) {
+		String update = "update users_tbl set phone=?, addr=?,"+
+				"email=?, job=? where id=?";
+		String result ="";
+		try {
+			Class.forName(name);
+			con = DriverManager.getConnection(db,"hr","hr");
+			pstmt = con.prepareStatement(update);
+			pstmt.setString(1, user.getTel());
+			pstmt.setString(2, user.getAddr());
+			pstmt.setString(3, user.getEmail());
+			pstmt.setString(4, user.getJob());
+			pstmt.setString(5, user.getId());
+			pstmt.executeUpdate();
+			result = "OK";
+		}catch(Exception e) {
+			result = "NOK";
+			e.printStackTrace();
+		}finally {
+			try {
+				con.close();
+				pstmt.close();
+			}catch(Exception e) {}
+		}
+		return result;
+	}
+	public User getUser(String id) {
+		String select = "select id, name, phone, addr, gender, "+
+				"email, job, to_char(entry_date, 'YYYY/MM/DD hh24:mi:ss') "+
+				"from users_tbl where id=?";
+		User user = null; // 조회 결과 저장을 위한 변수 선언
+		try {
+			Class.forName(name);
+			con = DriverManager.getConnection(db,"hr","hr");
+			pstmt = con.prepareStatement(select);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				user = new User();
+				user.setId(rs.getString(1)); //계정
+				user.setName(rs.getString(2));//이름
+				user.setTel(rs.getString(3));//전화번호
+				user.setAddr(rs.getString(4));//주소
+				user.setGender(rs.getString(5).charAt(0));//성별
+				user.setEmail(rs.getString(6));//이메일
+				user.setJob(rs.getString(7));//직업
+				user.setEntry_date(rs.getString(8));//가입일
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
 			try {
-				rs.close(); con.close(); stmt.close();
+				rs.close(); pstmt.close(); con.close();
 			}catch(Exception e) {}
 		}
-		return al;
+		return user;
+	}
+	
+	public int userCount() {
+		String select = "select count(*) from users_tbl";
+		int count = -1;
+		try {
+			Class.forName(name);
+			con = DriverManager.getConnection(db,"hr","hr");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(select);
+			if(rs.next()) count = rs.getInt(1);
+			else count = 0;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				con.close(); stmt.close(); rs.close();
+			}catch(Exception e) {}
+		}
+		return count;
+	}
+	public ArrayList<User> selectAllUser(String page) {
+		String select = "select id, name, phone, gender, email, job, d"
+				+ " from (select id, name, phone, gender, email, job, d, rownum rn"
+				+ " from (select id, name, phone, gender, email, job, to_char(entry_date, 'YYYY/MM/DD hh24:mi:ss') d"
+				+ " from users_tbl))"
+				+ " where rn > ? and rn < ?"
+				+ " order by id asc";
+		ArrayList<User> list = new ArrayList<User>();
+//		String select = "select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss')"+
+//				" from (select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss'), rownum rn"+
+//				" from (select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss')"+
+//				" from users_tbl))"
+//				+" where rn > ? and rn < ? order by id asc";
+//		String select = "select id, pwd, name, phone, addr, gender, email, job, to_char(entry_date, 'YY/MM/DD hh:mm:ss') "+
+//				"from users_tbl order by id asc";
+//		ArrayList<User> al = new ArrayList<User>();
+		try {
+			Class.forName(name);
+			con = DriverManager.getConnection(db,"hr","hr");
+			pstmt = con.prepareStatement(select);
+			Integer pageNum = null;// 페이지 번호
+			if(page == null) pageNum = 1;
+			else pageNum = Integer.parseInt(page);
+//			if(page != null) {
+//				pageNum = Integer.parseInt(page);
+//			}
+			int start = (pageNum - 1) * 5;
+			int end = ((pageNum - 1) *5) + 6;
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				User user = new User();
+				user.setId(rs.getString(1));
+				user.setName(rs.getString(2));
+				user.setTel(rs.getString(3));
+				user.setGender(rs.getString(4).charAt(0));
+				user.setEmail(rs.getString(5));
+				user.setJob(rs.getString(6));
+				user.setEntry_date(rs.getString(7));
+				list.add(user);
+			}
+//			stmt = con.createStatement();
+//			rs = stmt.executeQuery(select);
+			
+//			pstmt = con.prepareStatement(select);
+
+//			pstmt.setInt(1, start);
+//			pstmt.setInt(2, end);
+//			rs = pstmt.executeQuery();
+//			while(rs.next()) {
+//				User user = new User();
+//				user.setId(rs.getString(1));
+//				user.setPwd(rs.getString(2));
+//				user.setName(rs.getString(3));
+//				user.setTel(rs.getString(4));
+//				user.setAddr(rs.getString(5));
+//				user.setGender(rs.getString(6).charAt(0));
+//				user.setEmail(rs.getString(7));
+//				user.setJob(rs.getString(8));
+//				user.setEntry_date(rs.getString(9));
+//				al.add(user);
+//				
+//			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+//				rs.close(); con.close(); stmt.close();
+				rs.close(); con.close(); pstmt.close();
+			}catch(Exception e) {}
+		}
+		return list;
 	}
 	public String putUser(User user) {
 		String insert = "insert into users_tbl values("+
