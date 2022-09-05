@@ -35,7 +35,6 @@ public class ItemUpdateServlet extends HttpServlet {
 		item.setSpec(spec);
 		DBExpert dbe = new DBExpert();
 		String result = dbe.updateProduct(item);
-		System.out.println("result °ª"+result);
 		response.sendRedirect("getItem?ID="+item.getId()+"&R="+result);
 	
 	}

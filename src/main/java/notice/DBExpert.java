@@ -20,6 +20,31 @@ public class DBExpert {
 	Connection con; Statement stmt; PreparedStatement pstmt;
 	ResultSet rs;
 	
+//	public String updateItem(Item item) {
+//		String update = "update items_tbl set name=?,"+
+//				"price=?, spec=? where id=?";
+//		String result = ""; //변경 성공 유뮤를 위한 변수 선언
+//		try {
+//			Class.forName(name);
+//			con = DriverManager.getConnection(db,"hr","hr");
+//			pstmt = con.prepareStatement(update);
+//			pstmt.setString(1, item.getName());
+//			pstmt.setInt(2, item.getPrice());
+//			pstmt.setString(3, item.getSpec());
+//			pstmt.setString(4, item.getId());
+//			pstmt.executeUpdate();
+//			result = "OK";
+//		}catch(Exception e) {
+//			result = "NOK";
+//			e.printStackTrace();
+//		}finally {
+//			try {
+//				con.close(); pstmt.close();
+//			}catch(Exception e) {}
+//		}
+//		return result;
+//	}
+	
 	public String updateProduct(Item item) {
 		String update = "update items_tbl set name=?, price=?,"+
 				"spec=? where id=?";
