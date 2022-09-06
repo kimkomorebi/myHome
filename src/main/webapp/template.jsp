@@ -77,16 +77,16 @@ function startClock(){
 							<a href="template.jsp?BODY=noticeInput.jsp"><font color="red">◎ 공지사항 쓰기</font></a><br/>
 						</c:if>
 						<a href="template.jsp?BODY=NoticeSelectAllServlet">● 공지사항 목록</a><br/>
-						<c:if test="${sessionScope.MANAGER != null }">
+						<c:if test="${sessionScope.LOGINID != null }">
 							<a href="template.jsp?BODY=bbsInput.jsp">● 게시글 쓰기</a><br/>
 						</c:if>
-						<a href="">● 게시글 목록</a><br/> 
+						<a href="getAllBBS.do">● 게시글 목록</a><br/> 
 						<c:if test="${sessionScope.MANAGER != null }">
 							<a href="getNationCodes">◎ 상품 등록</a><br/>
 						</c:if>
 						<a href="getAllItems">● 상품 목록</a><br/>
 						<c:if test="${sessionScope.LOGINID != null }">
-							<a href="#">● 장바구니 보기</a>
+							<a href="#">● 장바구니 보기</a><br/>
 						</c:if>
 						<a href="#">● 이미지 게시글  쓰기</a><br/>
 						<a href="#">● 이미지 게시글  목록/답글 달기</a><br/>

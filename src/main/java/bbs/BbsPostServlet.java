@@ -27,6 +27,16 @@ public class BbsPostServlet extends HttpServlet {
 		//글번호(쿼리 호출), 작성자(세션에서 추출), 작성일(sysdate)
 		HttpSession session = request.getSession();
 		String id = (String)session.getAttribute("LOGINID");
+		CRUD crud = new CRUD();
+		int seqno = crud.getMaxSeqno() + 1;
+		BBS bbs = new BBS();
+		bbs.setSeqno(seqno);
+		bbs.setTitle(title);
+		bbs.setWriter(id);
+		bbs.setContent(content);
+		int result = crud.putBBS(bbs);
+		//게시글 등록 유무를 출력하는 JSP(bbsResult.jsp)로 전환
+		response.sendRedirect("template.jsp?BODY=bbsResult.jsp?R="+result);
 	}
 
 }

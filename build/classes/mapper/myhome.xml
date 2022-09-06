@@ -2,6 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.myhome">
+	<select id="getBBS" parameterType="Integer" resultType="bbs.BBS">
+		select seqno, title, writer, content
+		to_char(input_date, 'YY/MM/DD hh24:mi:ss') as "date"
+		from bbs_tbl
+		where seqno = #{no}
+		
+	</select>
+	<select id="getBBSCount" resultType="Integer">
+		select count(*) from bbs_tbl
+	</select>
+	<select id="getAllBBS" parameterType="Integer" resultType="bbs.BBS">
+		select seqno, title, writer, "date"
+		from (select seqno, title, writer, "date", rownum as rn
+		from (select seqno, title, writer, to_char(input_date, 'YY/MM/DD hh24:mi:ss') as "date"
+		from bbs_tbl order by seqno desc))
+		where rn > (#{no}-1)*5 and rn <![CDATA[<]]> (((#{no}-1)*5)+6)
+		
+	</select>
+	<insert id="putBBS" parameterType="bbs.BBS">
+		insert into bbs_tbl
+		values(#{seqno}, #{title}, #{writer}, sysdate, #{content})
+	</insert>
 	<select id="maxSeqno"  resultType="Integer">
 		select max(seqno) from bbs_tbl
 	</select>
