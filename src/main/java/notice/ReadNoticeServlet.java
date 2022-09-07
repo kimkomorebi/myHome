@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bbs.CRUD;
+
 
 @WebServlet("/readNotice")
 public class ReadNoticeServlet extends HttpServlet {
@@ -18,8 +20,8 @@ public class ReadNoticeServlet extends HttpServlet {
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String seqNo = request.getParameter("SEQNO");
-		DBExpert dbe = new DBExpert();
-		Notice notice = dbe.getNotice(seqNo);
+		CRUD crud = new CRUD();
+		Notice notice = crud.getNotice(Integer.parseInt(seqNo));
 		request.setAttribute("NOTICE", notice);
 		RequestDispatcher rd = request.getRequestDispatcher("template.jsp?BODY=readNotice.jsp");
 		rd.forward(request, response);

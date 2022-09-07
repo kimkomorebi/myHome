@@ -2,12 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.myhome">
+	<select id="selectItemsCount" resultType="Integer">
+		select count(*) from items_tbl
+	</select>
+	<select id="getAllItems" parameterType="Integer" resultType="items.Item">
+			select id, name, price, origin
+			from (select id, name, price, origin, rownum rn
+			from (select id, name, price, origin
+			from items_tbl order by id asc))
+			where rn > (#{no}-1)*5 and rn <![CDATA[<]]>  ((#{no}-1)*5)+6
+	</select>
+	<insert id="putItem" parameterType="items.Item">
+		insert into items_tbl values(#{id}, #{name}, #{price}, #{spec}, #{origin})
+	</insert>
+	<select id="getNation" resultType="String">
+		select code from nation_code
+	</select>
+	<select id="getNotice" parameterType="Integer" resultType="notice.Notice">
+		select seqno, id, title, to_char(input_date, 'YY/MM/DD hh24:mi:ss') "date",
+		content from notice_tbl where seqno = #{no}
+	</select>
+	<select id="getNoticeCount" resultType="Integer">
+		select count(*) from notice_tbl
+	</select>
+	<select id="getAllNotice" parameterType="Integer" resultType="notice.Notice">
+		select seqno, id, title, "date"
+		from (select seqno, id, title, "date", rownum as rn
+		from (select seqno, id, title, to_char(input_date, 'YY/MM/DD hh24:mi:ss') as "date"
+		from notice_tbl order by seqno desc))
+		where rn > (#{no}-1)*5 and rn <![CDATA[<]]>  ((#{no}-1)*5)+6
+	</select>
+	<select id="getMaxSeqno" resultType="Integer">
+		select max(seqno) from notice_tbl
+	</select>
+	<insert id="putNotice" parameterType="notice.Notice">
+		insert into notice_tbl values(#{seqno},#{id},#{title},#{content},sysdate)
+	</insert>
+	
+	<select id="getPwd" parameterType="String" resultType="String">
+		select pwd from users_tbl
+		 where id = #{id}
+	</select>
 	<select id="getBBS" parameterType="Integer" resultType="bbs.BBS">
-		select seqno, title, writer, content
+		select seqno, title, writer, content,
 		to_char(input_date, 'YY/MM/DD hh24:mi:ss') as "date"
 		from bbs_tbl
 		where seqno = #{no}
-		
 	</select>
 	<select id="getBBSCount" resultType="Integer">
 		select count(*) from bbs_tbl

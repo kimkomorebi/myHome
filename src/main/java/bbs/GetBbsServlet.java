@@ -25,7 +25,7 @@ public class GetBbsServlet extends HttpServlet {
 		CRUD crud = new CRUD();
 		BBS bbs = crud.getBBS(Integer.parseInt(no));
 		request.setAttribute("BBS", bbs);
-		RequestDispatcher rd = request.getRequestDispatcher("template.jsp?BODY=bbsread.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("template.jsp?BODY=bbsRead.jsp");
 		rd.forward(request, response);
 	}
 

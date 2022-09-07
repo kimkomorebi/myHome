@@ -33,16 +33,14 @@
 			<a href="getAllItems?PAGENO=${page }">${page }</a>
 		</c:forEach>
 	</div>
-	<c:if test="${requestScope.R == 'true' }">
+	<c:if test="${requestScope.R > 0 }">
 		<script type="text/javascript">
 			alert("상품이 등록되었습니다.");
-			
 		</script>
 	</c:if>
-	<c:if test="${requestScope.R == 'false' }">
+	<c:if test="${requestScope.R < 1 }">
 		<script type="text/javascript">
 			alert("상품이 등록되지 않았습니다. 관리자에게 문의하세요.");
-			
 		</script>
 	</c:if>
 </body>

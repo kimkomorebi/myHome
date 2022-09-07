@@ -8,8 +8,121 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import items.Item;
+import notice.Notice;
+
 public class CRUD {
 	private final String namespace ="mapper.myhome";
+	
+	public Integer selectItemsCount() {
+		SqlSession ss = getSession();
+		Integer count = null;
+		try {
+			count = ss.selectOne(namespace+".selectItemsCount");
+			if(count == null) count = 0;
+		}finally {
+			ss.close();
+		}
+		return count;
+	}
+	public List<Item> getAllItems(int pageNo) {
+		SqlSession ss = getSession();
+		List<Item> list = null;
+		try {
+			list = ss.selectList(namespace+".getAllItems",pageNo);
+		}finally {
+			ss.close();
+		}
+		return list;
+	}
+	public int putItem(Item item) {
+		SqlSession ss = getSession();
+		int result = -1;
+		try {
+			result = ss.insert(namespace+".putItem",item);
+			if(result > 0)ss.commit();
+			else ss.rollback();
+		}finally {
+			ss.close();
+		}
+		return result;
+	}
+	public List<String> getNations() {
+		SqlSession ss = getSession();
+		List<String> list = null;
+		try {
+			list = ss.selectList(namespace+".getNation");
+		}finally {
+			ss.close();
+		}
+		return list;
+	}
+	public Notice getNotice(int seqno) {
+		SqlSession ss = getSession();
+		Notice notice = null; // 조회 결과를 저장할 변수 선언
+		try {
+			notice = ss.selectOne(namespace+".getNotice",seqno);
+		}finally {
+			ss.close();
+		}
+		return notice;
+	}
+	public int getNoticeCount() {
+		SqlSession ss = getSession();
+		int result = -1;
+		try {
+			Integer r = ss.selectOne(namespace+".getNoticeCount");
+			if(r  == null) result = 0;
+			else result = r;
+		}finally {
+			ss.close();
+		}
+		return result;
+	}
+	public List<Notice> getAllNotice(int pageno) {
+		SqlSession ss = getSession();
+		List<Notice> list = null;
+		try {
+			list = ss.selectList(namespace+".getAllNotice",pageno);
+		}finally {
+			ss.close();
+		}
+		return list;
+	}
+	public int getNoticeMaxSeqno() {
+		SqlSession ss = getSession();
+		int result = -1;
+		try {
+			Integer r = ss.selectOne(namespace+".getMaxSeqno");
+			if(r == null) result = 0;
+			else result = r;
+		}finally {
+			ss.close();
+		}
+		return result;
+	}
+	public int putNotice(Notice n) {
+		SqlSession ss = getSession();
+		int result = -1;
+		try {
+			result = ss.insert(namespace+".putNotice",n);
+			if(result > 0) ss.commit();
+			else ss.rollback();
+		}finally {
+			ss.close();
+		}
+		return result;
+	}
+	public String getPwd(String id) {
+		SqlSession ss = getSession();
+		String pwd = null;//조회 결과를 저장할 변수 선어
+		try {
+			pwd = ss.selectOne(namespace+".getPwd",id);
+		}finally {
+			ss.close();
+		}
+		return pwd;
+	}
 	
 	public BBS getBBS(Integer seqno) {
 		SqlSession ss = getSession();

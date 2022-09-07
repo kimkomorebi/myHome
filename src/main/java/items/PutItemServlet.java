@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import notice.DBExpert;
+import bbs.CRUD;
 
 
 
@@ -34,8 +34,9 @@ public class PutItemServlet extends HttpServlet {
 		item.setPrice(Integer.parseInt(price));
 		item.setSpec(spec);
 		item.setOrigin(code);
-		DBExpert dbe = new DBExpert();
-		boolean result = dbe.putItem(item); //상품 정보 삽입
+		CRUD crud = new CRUD();
+		//boolean result = crud.putItem(item); //상품 정보 삽입
+		int result = crud.putItem(item);
 		//페이지 전환(서블릿(상품 목록 조회) 매핑)
 		//상품 목록 조회 서블릿의 매핑 이름 : getAllItems
 		response.sendRedirect("getAllItems?R="+result);
