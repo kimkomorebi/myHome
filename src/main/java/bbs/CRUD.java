@@ -14,6 +14,18 @@ import notice.Notice;
 public class CRUD {
 	private final String namespace ="mapper.myhome";
 	
+
+	
+	public Item getItem(String code) {
+		SqlSession ss = getSession();
+		Item item = null; //조회 결과를 저장할 변수 선언
+		try {
+			item = ss.selectOne(namespace+".getItem",code);
+		}finally {
+			ss.close();
+		}
+		return item;
+	}
 	public Integer selectItemsCount() {
 		SqlSession ss = getSession();
 		Integer count = null;

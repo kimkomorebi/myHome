@@ -2,10 +2,18 @@ package items;
 
 public class Item {
 	private String id; //상품 번호
+	private int num;//갯수
 	private String name;//상품 이름
 	private int price;//가격
 	private String spec;//설명
 	private String origin;//원산지
+	
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	public String getId() {
 		return id;
 	}

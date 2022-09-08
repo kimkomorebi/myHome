@@ -24,8 +24,7 @@
 					<td><a href="getItem?ID=${item.id }">${item.name }</a></td>
 					<td>${item.price }</td>
 					<td>${item.origin }</td>
-
-					<td><a href="#">장바구니 담기</a></td>
+					<td><a href="#" onClick="window.open('addCart.do?CODE=${item.id }','my_cart','width=400, height=300')">장바구니 담기</a></td>
 				</tr>
 			</c:forEach>
 		</table>
