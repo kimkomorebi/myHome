@@ -26,7 +26,8 @@
 					<th>수정/삭제</th>
 				</tr>
 				<c:forEach items="${requestScope.LISTS }" var="item">
-					<form action="" onSubmit="return check(this)">
+					<form action="modifyCart.do" method="post" onSubmit="return check(this)">
+						<input type="hidden" value="${item.id }" name="CODE"/>
 						<tr>
 							<td>${item.id }</td>
 							<td>${item.name }</td>
@@ -35,8 +36,8 @@
 							<td><input type="text" name="NUM" value="${item.num }" size="2"/></td>
 							<td><fmt:formatNumber groupingUsed="true">${item.price * item.num }</fmt:formatNumber></td>
 							<td>
-								<input type="submit" value="수정"/>
-								<input type="submit" value="삭제"/>
+								<input type="submit" value="수정" name="BTN"/>
+								<input type="submit" value="삭제" name="BTN"/>
 							</td>
 						</tr>
 					</form>

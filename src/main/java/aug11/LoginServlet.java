@@ -1,6 +1,7 @@
 package aug11;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bbs.CRUD;
+import cart.Cart;
+import items.CartItem;
 
 /**
  * Servlet implementation class LoginServlet
@@ -48,6 +51,18 @@ public class LoginServlet extends HttpServlet {
 			}else {
 				session.setAttribute("LOGINID", id);
 			}
+			//DB에서 로그인 계정으로 장바구니를 찾는다. 시작//
+			List<CartItem> cartList = crud.getCart(id);
+			if(cartList != null) {
+				Cart cart = new Cart(id);//장바구니를 생성
+				for(int i=0; i<cartList.size(); i++) {
+					CartItem ci = cartList.get(i);
+					cart.getCodeList().add(ci.getCode());
+					cart.getNumList().add(ci.getNum());
+				}
+				session.setAttribute("CART", cart);
+			}
+			//DB에서 로그인 계정으로 장바구니를 찾는다. 종료//
 		}else {
 			result = "NOPWD"; //암호 불일치
 		}

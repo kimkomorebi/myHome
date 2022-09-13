@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.myhome">
+	<select id="getCart" parameterType="String" resultType="items.CartItem">
+		select * from cart_tbl where id = #{id}
+	</select>
+	<delete id="deleteCart" parameterType="items.CartItem">
+		delete from cart_tbl where id=#{id} and code=#{code}
+	</delete>
+	<update id="updateCart" parameterType="items.CartItem">
+		update cart_tbl set num=#{num} where id=#{id} and code=#{code}
+	</update>
+	<select id="maxCart" resultType="Integer">
+		select max(seq) from cart_tbl
+	</select>
+	<insert id="addCart" parameterType="items.CartItem">
+		insert into cart_tbl values(#{seq},#{id},#{code},#{num})
+	</insert>
 	<select id="getItem" parameterType="String" resultType="items.Item">
 		select * from items_tbl where id=#{id}
 	</select>

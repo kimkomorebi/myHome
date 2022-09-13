@@ -8,13 +8,75 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import items.CartItem;
 import items.Item;
 import notice.Notice;
 
 public class CRUD {
 	private final String namespace ="mapper.myhome";
 	
-
+	public List<CartItem> getCart(String id) {
+		SqlSession ss = getSession();
+		List<CartItem> list = null;
+		try {
+			list = ss.selectList(namespace+".getCart",id);
+		}finally {
+			ss.close();
+		}
+		return list;
+	}
+	
+	public int deleteCart(CartItem ci) {
+		SqlSession ss = getSession();
+		int result = 0;
+		try {
+			result = ss.delete(namespace+".deleteCart",ci);
+			if(result > 0) ss.commit();
+			else ss.rollback();
+		}finally {
+			ss.close();
+		}
+		return result;
+	}
+	
+	public int updateCart(CartItem ci) {
+		SqlSession ss = getSession();
+		int result = 0;
+		try {
+			result = ss.update(namespace+".updateCart",ci);
+			if(result > 0) ss.commit();
+			else ss.rollback();
+		}finally {
+			ss.close();
+		}
+		return result;
+	}
+	
+	public int addCart(CartItem ci) {
+		SqlSession ss = getSession();
+		int result = 0;
+		try {
+			result = ss.insert(namespace+".addCart",ci);
+			if(result > 0) ss.commit();
+			else ss.rollback();
+		}finally {
+			ss.close();
+		}
+		return result;
+	}
+	
+	public int maxCart() {
+		SqlSession ss = getSession();
+		int result = -1;
+		try {
+			Integer r = ss.selectOne(namespace+".maxCart");
+			if(r == null) result = 0;
+			else result = r;
+		}finally {
+			ss.close();
+		}
+		return result;
+	}
 	
 	public Item getItem(String code) {
 		SqlSession ss = getSession();
