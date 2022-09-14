@@ -1,7 +1,8 @@
-package cart;
+package image;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,28 +10,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/addCart.do")
-public class AddCartServlet extends HttpServlet {
+/**
+ * Servlet implementation class ImageFormServlet
+ */
+@WebServlet("/imageForm.do")
+public class ImageFormServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public AddCartServlet() {
+    public ImageFormServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String code = request.getParameter("CODE");
 		HttpSession session = request.getSession();
 		String id = (String)session.getAttribute("LOGINID");
-		if(id == null) {//로그인을 안 한 경우
-			response.sendRedirect("login.jsp?CART=YES");
-		}else {//로그인을 한 경우
-			Cart cart = (Cart)session.getAttribute("CART");
-			if(cart == null) cart = new Cart(id);
+		if(id == null) {//로그인 안 한 경우
 			
-			cart.addCart(code, 1);//상품번호와 1을 장바구니에 저장
-			session.setAttribute("CART", cart);
-			//addCartResult.jsp로 전환
-			response.sendRedirect("addCartResult.jsp");
+		}else {//로그인 한 경우
+			RequestDispatcher rd = request.getRequestDispatcher("template.jsp?BODY=imageWriteForm.jsp");
+			rd.forward(request, response);
 		}
 	}
 

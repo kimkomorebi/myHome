@@ -35,6 +35,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("ID");
 		String pwd = request.getParameter("PWD");
+		String popUp = request.getParameter("CART");
 		//고객 정보 테이블에 있는 계정과 암호와 비교한다.
 		CRUD crud = new CRUD();
 		String result = ""; // 로그인 결과를 위한 변수 선언
@@ -68,7 +69,12 @@ public class LoginServlet extends HttpServlet {
 		}
 		//로그인 결과 JSP(loginResult.jsp)로 전환
 		//1.Redirect, 2.Forward, 3.상관 없다.
-		response.sendRedirect("template.jsp?BODY=loginResult.jsp?R="+result);
+		if(popUp != null) {//팝업 창을 통한 로그인
+			response.sendRedirect("loginResult.jsp?R="+result+"&POPUP=YES");
+		}else {//홈을 통한 로그인
+			response.sendRedirect("template.jsp?BODY=loginResult.jsp?R="+result);
+			
+		}
 		
 	}
 

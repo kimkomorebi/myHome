@@ -88,7 +88,7 @@ function startClock(){
 						<c:if test="${sessionScope.LOGINID != null }">
 							<a href="cartList.do">● 장바구니 보기</a><br/>
 						</c:if>
-						<a href="#">● 이미지 게시글  쓰기</a><br/>
+						<a href="imageForm.do">● 이미지 게시글  쓰기</a><br/>
 						<a href="#">● 이미지 게시글  목록/답글 달기</a><br/>
 					</div>
 				</td>

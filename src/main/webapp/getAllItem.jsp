@@ -8,6 +8,14 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<script type="text/javascript">
+		function popupAlert(){
+			setTimeout(
+					function(){ 
+						alert("로그인 되었습니다.");
+					},100);
+		}
+	</script>
 	<div align="center">
 		<h2>상 품 목 록</h2>
 		<table border="1" width="100%">
